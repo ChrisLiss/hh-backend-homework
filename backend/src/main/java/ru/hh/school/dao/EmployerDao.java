@@ -38,9 +38,9 @@ public class EmployerDao {
         session.update(employer);
     }
 
-    public EmployerEntity getByID(Integer id) {
+    public Optional<EmployerEntity> getByID(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(EmployerEntity.class, id);
+        return Optional.of(session.get(EmployerEntity.class, id));
     }
 
     public void delete(EmployerEntity employerEntity) {

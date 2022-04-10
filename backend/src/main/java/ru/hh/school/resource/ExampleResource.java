@@ -136,7 +136,7 @@ public class ExampleResource {
                                              .map(EmployerMapper::mapEntityToDto)
                                              .collect(Collectors.toList());
 
-    employerEntityList.stream().forEach(employerService::updateViewsCount);
+    employerEntityList.forEach(employerService::updateViewsCount);
 
     return Response.ok(employerDtoList).build();
 
@@ -191,8 +191,7 @@ public class ExampleResource {
             .map(VacancyMapper::mapEntityToDto)
             .collect(Collectors.toList());
 
-    vacancyEntityList.stream()
-            .forEach(vacancyService::updateViewsCountVacancyAndEmployer);
+    vacancyEntityList.forEach(vacancyService::updateViewsCountVacancyAndEmployer);
 
     return Response.ok(vacancyDtoList).build();
 

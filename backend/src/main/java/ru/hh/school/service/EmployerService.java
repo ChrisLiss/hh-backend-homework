@@ -23,7 +23,7 @@ public class EmployerService {
 
     @Transactional
     public void updateInfo(EmployerDto employerDto) {
-        EmployerEntity employerEntity = employerDao.getByID(employerDto.getId());
+        EmployerEntity employerEntity = employerDao.getByID(employerDto.getId()).orElseThrow(NotFoundException::new);
         employerEntity.setName(employerDto.getName());
         employerEntity.setDescription(employerDto.getDescription());
         // Area
@@ -32,7 +32,7 @@ public class EmployerService {
 
     @Transactional
     public void updateComment(Integer id, String comment) {
-        EmployerEntity employerEntity = employerDao.getByID(id);
+        EmployerEntity employerEntity = employerDao.getByID(id).orElseThrow(NotFoundException::new);
         employerEntity.setComment(comment);
         employerDao.update(employerEntity);
     }
@@ -45,7 +45,10 @@ public class EmployerService {
 
     @Transactional
     public void deleteFromFavorites(Integer id) {
-        employerDao.delete(employerDao.getByID(id));
+        EmployerEntity employerEntity = employerDao.getByID(id).orElseThrow(NotFoundException::new);
+        if (employerEntity != null) {
+            employerDao.delete(employerEntity);
+        }
     }
 
     @Transactional

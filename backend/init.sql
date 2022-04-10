@@ -30,8 +30,8 @@ CREATE TABLE if not exists vacancy (
     salary_id int,
     created_at varchar(100),
     views_count int default 0,
-    comment varchar(100),
-    foreign key (employer_id) references employer(employer_id)
+    comment varchar(100)
+
 );
 
 

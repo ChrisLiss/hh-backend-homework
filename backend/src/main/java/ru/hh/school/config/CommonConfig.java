@@ -1,5 +1,6 @@
 package ru.hh.school.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -10,6 +11,8 @@ import ru.hh.school.dao.VacancyDao;
 import ru.hh.school.resource.ExampleHttpClient;
 import ru.hh.school.resource.ExampleResource;
 import ru.hh.school.service.*;
+
+import java.net.http.HttpClient;
 
 @Configuration
 @Import({
@@ -24,7 +27,6 @@ import ru.hh.school.service.*;
   VacancyDao.class,
   VacancyService.class,
   VacancyMapper.class
-
 
 })
 public class CommonConfig {

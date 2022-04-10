@@ -71,10 +71,6 @@ public class VacancyEntity {
         return dateCreate;
     }
 
-    public void setDateCreate(LocalDate dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
     public AreaEntity getArea() {
         return area;
     }
