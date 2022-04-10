@@ -8,8 +8,12 @@ public class VacancyDto {
     private String name;
     private AreaDto area;
     private SalaryDto salary;
-    private String created_at;
+    private String createdAt;
     private EmployerDto employer;
+    private LocalDate dateCreate;
+    private Popularity popularity;
+    private Integer viewsCount;
+    private String comment;
 
     public VacancyDto() {
     }
@@ -19,8 +23,25 @@ public class VacancyDto {
         this.name = name;
         this.area = area;
         this.salary = salary;
-        this.created_at = created_at;
+        this.createdAt = created_at;
         this.employer = employer;
+    }
+
+    public VacancyDto(Integer id, String name, AreaDto area, SalaryDto salary, String createdAt, EmployerDto employer,
+                      LocalDate dateCreate, Integer viewsCount, String comment) {
+        this.id = id;
+        this.name = name;
+        this.area = area;
+        this.salary = salary;
+        this.createdAt = createdAt;
+        this.employer = employer;
+        this.dateCreate = dateCreate;
+        this.viewsCount = viewsCount;
+        this.comment = comment;
+        if (viewsCount > 50) {
+            this.popularity = Popularity.POPULAR;
+        }
+        else this.popularity = Popularity.REGULAR;
     }
 
     public Integer getId() {
@@ -55,12 +76,12 @@ public class VacancyDto {
         this.salary = salary;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public EmployerDto getEmployer() {
@@ -69,5 +90,37 @@ public class VacancyDto {
 
     public void setEmployer(EmployerDto employer) {
         this.employer = employer;
+    }
+
+    public LocalDate getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Integer getViewsCount() {
+        return viewsCount;
+    }
+
+    public void setViewsCount(Integer viewsCount) {
+        this.viewsCount = viewsCount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Popularity getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Popularity popularity) {
+        this.popularity = popularity;
     }
 }

@@ -14,7 +14,7 @@ public class EmployerDto {
     private LocalDate dateCreate;
     private AreaDto area;
     private String comment;
-    private String popularity;
+    private Popularity popularity;
     private Integer viewsCount;
 
     public EmployerDto() {
@@ -29,9 +29,10 @@ public class EmployerDto {
         this.comment = comment;
         this.viewsCount = views_count;
         if (views_count > 50) {
-            this.popularity = "POPULAR";
+            this.popularity = Popularity.POPULAR;
         }
-        else this.popularity = "REGULAR";
+        else this.popularity = Popularity.REGULAR;
+
     }
 
     public Integer getId() {
@@ -82,19 +83,19 @@ public class EmployerDto {
         this.comment = comment;
     }
 
-    public String getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(String popularity) {
-        this.popularity = popularity;
-    }
-
     public Integer getViewsCount() {
         return viewsCount;
     }
 
     public void setViewsCount(Integer viewsCount) {
         this.viewsCount = viewsCount;
+    }
+
+    public Popularity getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Popularity popularity) {
+        this.popularity = popularity;
     }
 }

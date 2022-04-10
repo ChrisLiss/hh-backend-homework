@@ -6,6 +6,9 @@ import ru.hh.school.entity.AreaEntity;
 public class AreaMapper {
 
     public static AreaDto mapEntityToDTO(AreaEntity areaEntity) {
+        if (areaEntity == null) {
+            return null;
+        }
         return new AreaDto(areaEntity.getId(), areaEntity.getName());
     }
 

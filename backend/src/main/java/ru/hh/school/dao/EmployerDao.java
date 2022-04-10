@@ -26,7 +26,7 @@ public class EmployerDao {
             return;
         }
         Session session = sessionFactory.getCurrentSession();
-        session.save(employer);
+        session.saveOrUpdate(employer);
 
     }
 
@@ -50,7 +50,7 @@ public class EmployerDao {
 
     public List<EmployerEntity> getEmployers() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT empl FROM EmployerEntity empl", EmployerEntity.class).getResultList();
+        return session.createQuery("SELECT employ FROM EmployerEntity employ", EmployerEntity.class).getResultList();
     }
 
 

@@ -38,6 +38,12 @@ public class EmployerService {
     }
 
     @Transactional
+    public void updateViewsCount(EmployerEntity employerEntity) {
+        employerEntity.setViewsCount(employerEntity.getViewsCount() + 1);
+        employerDao.update(employerEntity);
+    }
+
+    @Transactional
     public void deleteFromFavorites(Integer id) {
         employerDao.delete(employerDao.getByID(id));
     }

@@ -10,6 +10,13 @@ public class SalaryDto {
     public SalaryDto() {
     }
 
+    public SalaryDto(Integer from, Integer to, String currency, Boolean gross) {
+        this.from = from;
+        this.to = to;
+        this.currency = currency;
+        this.gross = gross;
+    }
+
     public Integer getFrom() {
         return from;
     }

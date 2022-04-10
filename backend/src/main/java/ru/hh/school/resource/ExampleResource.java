@@ -46,12 +46,9 @@ public class ExampleResource {
   @GET
   @Path(value = "/employer")
   @Produces(MediaType.APPLICATION_JSON)
-  // TODO: 02.04.2022 Получить список компаний с api hh
   public Response getEmployers() throws Exception {
-
     logger.info("получить список работодателей");
     return Response.ok(httpClientExample.getEmployers()).build();
-
   }
 
   @GET
@@ -138,7 +135,9 @@ public class ExampleResource {
                                              .map(EmployerMapper::mapEntityToDto)
                                              .collect(Collectors.toList());
 
-    return Response.ok(employerEntityList).build();
+    employerEntityList.stream().forEach(employerService::updateViewsCount);
+
+    return Response.ok(employerDtoList).build();
 
   }
 
@@ -154,6 +153,47 @@ public class ExampleResource {
     vacancyService.create(vacancyEntity);
 
     return Response.ok().build();
+  }
+
+  @DELETE
+  @Path(value = "favorites/vacancy/{vacancy_id}")
+  public Response deleteFavoriteVacancy(@PathParam(value = "vacancy_id") Integer id) {
+
+    logger.info("удалить вакансию из избранного");
+    vacancyService.deleteFromFavorites(id);
+
+    return Response.ok().build();
+
+  }
+
+  @POST
+  @Path(value = "/favorites/vacancy/{vacancy_id}/refresh")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response updateInfoFavoriteVacancy(@PathParam(value = "vacancy_id") Integer vacancyId) throws Exception {
+
+    logger.info("обновить данные по избранной вакансии");
+    VacancyDto vacancyDto = httpClientExample.getVacancyById(vacancyId);
+    vacancyService.updateInfo(vacancyDto);
+
+    return Response.ok().build();
+  }
+
+  @GET
+  @Path(value = "/favorites/vacancy")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getFavoritesVacancies() {
+
+    logger.info("получить все избранные вакансии");
+
+    List<VacancyEntity> vacancyEntityList =vacancyService.getVacancies();
+    List<VacancyDto> vacancyDtoList = vacancyEntityList.stream()
+            .map(VacancyMapper::mapEntityToDto)
+            .collect(Collectors.toList());
+
+    vacancyEntityList.stream()
+            .forEach(vacancyService::updateViewsCountVacancyAndEmployer);
+
+    return Response.ok(vacancyDtoList).build();
 
   }
 

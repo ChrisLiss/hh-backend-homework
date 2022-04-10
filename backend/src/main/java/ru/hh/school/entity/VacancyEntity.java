@@ -16,21 +16,18 @@ public class VacancyEntity {
     @Column(name="date_create", nullable = false, updatable = false)
     private LocalDate dateCreate;
 
-    @ManyToOne
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "area_id")
     private AreaEntity area;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "salary_id")
     private SalaryEntity salary;
 
     @Column(name = "created_at")
-    private String created_at;
+    private String createdAt;
 
-    @ManyToOne
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employer_id")
     private EmployerEntity employer;
 
@@ -42,12 +39,13 @@ public class VacancyEntity {
     public VacancyEntity() {
     }
 
-    public VacancyEntity(String name, AreaEntity area, SalaryEntity salary, String created_at, EmployerEntity employer, String comment) {
+    public VacancyEntity(Integer id, String name, AreaEntity area, SalaryEntity salary, String created_at, EmployerEntity employer, String comment) {
+        this.id = id;
         this.name = name;
         this.dateCreate = LocalDate.now();
         this.area = area;
         this.salary = salary;
-        this.created_at = created_at;
+        this.createdAt = created_at;
         this.employer = employer;
         this.viewsCount = 0;
         this.comment = comment;
@@ -93,12 +91,12 @@ public class VacancyEntity {
         this.salary = salary;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public EmployerEntity getEmployer() {

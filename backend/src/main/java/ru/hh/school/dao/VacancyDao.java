@@ -3,7 +3,10 @@ package ru.hh.school.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import ru.hh.school.entity.EmployerEntity;
 import ru.hh.school.entity.VacancyEntity;
+
+import java.util.List;
 
 @Repository
 public class VacancyDao {
@@ -24,5 +27,28 @@ public class VacancyDao {
         }
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(vacancy);
+    }
+
+    public void delete(VacancyEntity vacancyEntity) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(vacancyEntity);
+    }
+
+    public VacancyEntity getById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(VacancyEntity.class, id);
+    }
+
+    public void update(VacancyEntity vacancyEntity) {
+        if (vacancyEntity == null) {
+            return;
+        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(vacancyEntity);
+    }
+
+    public List<VacancyEntity> getVacancies() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("SELECT vac FROM VacancyEntity vac", VacancyEntity.class).getResultList();
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Import;
 import ru.hh.nab.hibernate.MappingConfig;
 import ru.hh.nab.starter.NabCommonConfig;
 import ru.hh.school.dao.EmployerDao;
-import ru.hh.school.dao.SalaryDao;
 import ru.hh.school.dao.VacancyDao;
 import ru.hh.school.resource.ExampleHttpClient;
 import ru.hh.school.resource.ExampleResource;
@@ -24,8 +23,8 @@ import ru.hh.school.service.*;
   AreaMapper.class,
   VacancyDao.class,
   VacancyService.class,
-  VacancyMapper.class,
-  SalaryDao.class
+  VacancyMapper.class
+
 
 })
 public class CommonConfig {

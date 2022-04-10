@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class SalaryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "salary_id")
     private Integer id;
 
@@ -23,7 +23,8 @@ public class SalaryEntity {
     public SalaryEntity() {
     }
 
-    public SalaryEntity(Integer from, Integer to, String currency, Boolean gross) {
+    public SalaryEntity(Integer id, Integer from, Integer to, String currency, Boolean gross) {
+        this.id = id;
         this.from = from;
         this.to = to;
         this.currency = currency;
