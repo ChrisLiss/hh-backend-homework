@@ -48,9 +48,17 @@ public class EmployerDao {
         session.delete(employerEntity);
     }
 
-    public List<EmployerEntity> getEmployers() {
+    public List<EmployerEntity> getEmployers(Integer page, Integer perPage) {
+
+        int qPage = (page == null) ? 0 : page;
+        int qPerPage = (perPage == null) ? 20 : perPage;
+
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT employ FROM EmployerEntity employ", EmployerEntity.class).getResultList();
+
+        return session.createQuery("SELECT employ FROM EmployerEntity employ", EmployerEntity.class)
+                .setFirstResult(qPerPage * ( (qPage-1) +1 ))
+                .setMaxResults(qPerPage)
+                .getResultList();
     }
 
 

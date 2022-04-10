@@ -10,7 +10,7 @@ public class VacancyDto {
     private SalaryDto salary;
     private String createdAt;
     private EmployerDto employer;
-    private LocalDate dateCreate;
+    private String dateCreate;
     private Popularity popularity;
     private Integer viewsCount;
     private String comment;
@@ -35,7 +35,7 @@ public class VacancyDto {
         this.salary = salary;
         this.createdAt = createdAt;
         this.employer = employer;
-        this.dateCreate = dateCreate;
+        this.dateCreate = dateCreate.toString();
         this.viewsCount = viewsCount;
         this.comment = comment;
         if (viewsCount > 50) {
@@ -92,12 +92,12 @@ public class VacancyDto {
         this.employer = employer;
     }
 
-    public LocalDate getDateCreate() {
+    public String getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(LocalDate dateCreate) {
-        this.dateCreate = dateCreate;
+        this.dateCreate = dateCreate.toString();
     }
 
     public Integer getViewsCount() {

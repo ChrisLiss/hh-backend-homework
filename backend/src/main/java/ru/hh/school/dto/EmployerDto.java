@@ -11,7 +11,7 @@ public class EmployerDto {
     private Integer id;
     private String name;
     private String description;
-    private LocalDate dateCreate;
+    private String dateCreate;
     private AreaDto area;
     private String comment;
     private Popularity popularity;
@@ -24,7 +24,7 @@ public class EmployerDto {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.dateCreate = dateCreate;
+        this.dateCreate = dateCreate.toString();
         this.area = area;
         this.comment = comment;
         this.viewsCount = views_count;
@@ -59,12 +59,12 @@ public class EmployerDto {
         this.description = description;
     }
 
-    public LocalDate getDateCreate() {
+    public String getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(LocalDate dateCreate) {
-        this.dateCreate = dateCreate;
+        this.dateCreate = dateCreate.toString();
     }
 
     public AreaDto getArea() {

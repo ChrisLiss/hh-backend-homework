@@ -26,14 +26,12 @@ public class ExampleResource {
   private static final Logger logger = LoggerFactory.getLogger(ExampleResource.class);
 
   private final ExampleHttpClient httpClientExample;
-//  private final EmployerMapper employerMapper;
   private final EmployerService employerService;
   private final VacancyService vacancyService;
 
   @Inject
-  public ExampleResource(ExampleHttpClient httpClientExample, EmployerMapper employerMapper, EmployerService employerService, VacancyService vacancyService) {
+  public ExampleResource(ExampleHttpClient httpClientExample, EmployerService employerService, VacancyService vacancyService) {
     this.httpClientExample = httpClientExample;
-//    this.employerMapper = employerMapper;
     this.employerService = employerService;
     this.vacancyService = vacancyService;
   }
@@ -46,9 +44,11 @@ public class ExampleResource {
   @GET
   @Path(value = "/employer")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getEmployers() throws Exception {
+  public Response getEmployers(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage,
+                               @QueryParam(value = "query") String text) throws Exception {
+
     logger.info("получить список работодателей");
-    return Response.ok(httpClientExample.getEmployers()).build();
+    return Response.ok(httpClientExample.getEmployers(page, perPage, text)).build();
   }
 
   @GET
@@ -65,10 +65,11 @@ public class ExampleResource {
   @GET
   @Path(value = "/vacancy")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getVacancies() throws Exception {
+  public Response getVacancies(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage,
+                               @QueryParam(value = "query") String text) throws Exception {
 
     logger.info("получить список вакансий");
-    return Response.ok(httpClientExample.getVacancies()).build();
+    return Response.ok(httpClientExample.getVacancies(page, perPage, text)).build();
 
   }
 
@@ -127,10 +128,10 @@ public class ExampleResource {
   @GET
   @Path(value = "/favorites/employer")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getFavoritesEmployers() {
+  public Response getFavoritesEmployers(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage) {
 
     logger.info("получить все избранные компании");
-    List<EmployerEntity> employerEntityList = employerService.getEmployers();
+    List<EmployerEntity> employerEntityList = employerService.getEmployers(page, perPage);
     List<EmployerDto> employerDtoList = employerEntityList.stream()
                                              .map(EmployerMapper::mapEntityToDto)
                                              .collect(Collectors.toList());
@@ -181,11 +182,11 @@ public class ExampleResource {
   @GET
   @Path(value = "/favorites/vacancy")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getFavoritesVacancies() {
+  public Response getFavoritesVacancies(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage) {
 
     logger.info("получить все избранные вакансии");
 
-    List<VacancyEntity> vacancyEntityList =vacancyService.getVacancies();
+    List<VacancyEntity> vacancyEntityList =vacancyService.getVacancies(page, perPage);
     List<VacancyDto> vacancyDtoList = vacancyEntityList.stream()
             .map(VacancyMapper::mapEntityToDto)
             .collect(Collectors.toList());

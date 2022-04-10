@@ -47,8 +47,15 @@ public class VacancyDao {
         session.update(vacancyEntity);
     }
 
-    public List<VacancyEntity> getVacancies() {
+    public List<VacancyEntity> getVacancies(Integer page, Integer perPage) {
+
+        int qPage = (page == null) ? 0 : page;
+        int qPerPage = (perPage == null) ? 20 : perPage;
+
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT vac FROM VacancyEntity vac", VacancyEntity.class).getResultList();
+        return session.createQuery("SELECT vac FROM VacancyEntity vac", VacancyEntity.class)
+                .setFirstResult(qPerPage * ( (qPage-1) +1 ))
+                .setMaxResults(qPerPage)
+                .getResultList();
     }
 }

@@ -51,7 +51,7 @@ public class VacancyService {
     }
 
     @Transactional
-    public List<VacancyEntity> getVacancies() {
-        return vacancyDao.getVacancies();
+    public List<VacancyEntity> getVacancies(Integer page, Integer perPage) {
+        return vacancyDao.getVacancies(page, perPage);
     }
 }

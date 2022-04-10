@@ -10,23 +10,37 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExampleHttpClient {
-
-    private final int page = 0;
-    private final int per_page = 10;
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
             .build();
 
-    public EmployerDto[] getEmployers() throws Exception {
+    public EmployerDto[] getEmployers(Integer page, Integer perPage, String text) throws Exception {
 
-        // TODO: 04.04.2022 Возвращает массив EmployerDTO
+        String pageQuery = "";
+        if (page != null) {
+            pageQuery = "page=" + Integer.toString(page);
+        }
+        String perPageQuery = "";
+        if (perPage != null) {
+            perPageQuery = "per_page=" + Integer.toString(perPage);
+        }
+        String textQuery = "";
+        if (text != null) {
+            textQuery = "text=" + text;
+        }
+
+        String queryString = Stream.of(pageQuery, perPageQuery, textQuery)
+                .filter(str -> !str.isEmpty())
+                .collect(Collectors.joining("&"));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("https://api.hh.ru/employers?" + "page=" + Integer.toString(page) + "&per_page=" + Integer.toString(per_page)))
+                .uri(URI.create("https://api.hh.ru/employers?" + queryString))
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -64,33 +78,29 @@ public class ExampleHttpClient {
 
     }
 
-    public EmployerDto getFavoriteEmployerById(Integer employerId) throws Exception {   // то же, что и getEmployerById
+
+    public VacancyDto[] getVacancies(Integer page, Integer perPage, String text) throws Exception {
+
+        String pageQuery = "";
+        if (page != null) {
+            pageQuery = "page=" + Integer.toString(page);
+        }
+        String perPageQuery = "";
+        if (perPage != null) {
+            perPageQuery = "per_page=" + Integer.toString(perPage);
+        }
+        String textQuery = "";
+        if (text != null) {
+            textQuery = "text=" + text;
+        }
+
+        String queryString = Stream.of(pageQuery, perPageQuery, textQuery)
+                .filter(str -> !str.isEmpty())
+                .collect(Collectors.joining("&"));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("https://api.hh.ru/employers/" + Integer.toString(employerId)))
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // обработать ошибки
-//        if (response.statusCode() == 200) {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        EmployerDto employerFavorite = objectMapper.readValue(response.body(), EmployerDto.class);
-
-        return employerFavorite;
-
-    }
-
-    public VacancyDto[] getVacancies() throws Exception {
-
-        // TODO: 04.04.2022 Возвращает массив VacancyDTO
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create("https://api.hh.ru/vacancies?" + "page=" + Integer.toString(page) + "&per_page=" + Integer.toString(per_page)))
+                .uri(URI.create("https://api.hh.ru/vacancies?" + queryString))
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -126,9 +136,6 @@ public class ExampleHttpClient {
         return objectMapper.readValue(response.body(), VacancyDto.class);
 
     }
-
-
-
 
 
 }

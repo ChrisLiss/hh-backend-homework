@@ -49,8 +49,8 @@ public class EmployerService {
     }
 
     @Transactional
-    public List<EmployerEntity> getEmployers() {
-        return employerDao.getEmployers();
+    public List<EmployerEntity> getEmployers(Integer page, Integer perPage) {
+        return employerDao.getEmployers(page, perPage);
     }
 
 
