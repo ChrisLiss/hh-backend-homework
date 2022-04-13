@@ -1,6 +1,5 @@
 package ru.hh.school.resource;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.hh.school.dto.EmployerDto;
@@ -15,9 +14,13 @@ import java.util.stream.Stream;
 
 public class ExampleHttpClient {
 
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_1_1)
-            .build();
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
+
+    public ExampleHttpClient(HttpClient httpClient, ObjectMapper objectMapper) {
+        this.httpClient = httpClient;
+        this.objectMapper = objectMapper;
+    }
 
     public EmployerDto[] getEmployers(Integer page, Integer perPage, String text) throws Exception {
 
@@ -48,14 +51,9 @@ public class ExampleHttpClient {
         // обработать ошибки
 //        if (response.statusCode() == 200) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
-
         JsonNode jsonNode = objectMapper.readTree(response.body()).get("items");
-        EmployerDto[] employersDto = objectMapper.readValue(jsonNode.toString(), EmployerDto[].class);
 
-        return employersDto;
+        return objectMapper.readValue(jsonNode.toString(), EmployerDto[].class);
     }
 
     public EmployerDto getEmployerById(Integer employerId ) throws Exception {
@@ -70,12 +68,7 @@ public class ExampleHttpClient {
         // обработать ошибки
 //        if (response.statusCode() == 200) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        EmployerDto employerDto = objectMapper.readValue(response.body(), EmployerDto.class);
-
-        return employerDto;
-
+        return objectMapper.readValue(response.body(), EmployerDto.class);
     }
 
 
@@ -108,15 +101,9 @@ public class ExampleHttpClient {
         // обработать ошибки
 //        if (response.statusCode() == 200) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
-
         JsonNode jsonNode = objectMapper.readTree(response.body()).get("items");
-        VacancyDto[] vacanciesDto= objectMapper.readValue(jsonNode.toString(), VacancyDto[].class);
 
-        return vacanciesDto;
-
+        return objectMapper.readValue(jsonNode.toString(), VacancyDto[].class);
     }
 
     public VacancyDto getVacancyById(Integer vacancyId) throws Exception {
@@ -131,11 +118,8 @@ public class ExampleHttpClient {
         // обработать ошибки
 //        if (response.statusCode() == 200) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper.readValue(response.body(), VacancyDto.class);
 
     }
-
 
 }

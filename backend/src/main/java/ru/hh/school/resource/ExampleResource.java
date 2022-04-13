@@ -47,7 +47,7 @@ public class ExampleResource {
   public Response getEmployers(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage,
                                @QueryParam(value = "query") String text) throws Exception {
 
-    logger.info("получить список работодателей");
+    logger.info("get list employers");
     return Response.ok(httpClientExample.getEmployers(page, perPage, text)).build();
   }
 
@@ -57,7 +57,7 @@ public class ExampleResource {
   // TODO: 02.04.2022 Получить компанию с id с api hh
   public Response getEmployerById(@PathParam(value = "employer_id") Integer employerId) throws Exception {
 
-    logger.info("Получить компанию по id");
+    logger.info("Get employer by id");
     return Response.ok(httpClientExample.getEmployerById(employerId)).build();
 
   }
@@ -68,7 +68,7 @@ public class ExampleResource {
   public Response getVacancies(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage,
                                @QueryParam(value = "query") String text) throws Exception {
 
-    logger.info("получить список вакансий");
+    logger.info("Get list vacancy");
     return Response.ok(httpClientExample.getVacancies(page, perPage, text)).build();
 
   }
@@ -78,7 +78,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getVacancyById(@PathParam(value = "vacancy_id") Integer vacancyId) throws Exception {
 
-    logger.info("получить вакансию");
+    logger.info("Get vacancy by id");
     return Response.ok(httpClientExample.getVacancyById(vacancyId)).build();
 
   }
@@ -87,7 +87,7 @@ public class ExampleResource {
   @Path(value = "/favorites/employer")
   public Response saveFavoriteEmployer(@QueryParam(value = "employer_id") Integer employerId, @QueryParam(value = "comment") String comment) throws Exception {
 
-    logger.info("сохранить избранную компанию");
+    logger.info("Save favorite employer");
     EmployerDto employerDto = httpClientExample.getEmployerById(employerId);
     EmployerEntity employerEntity = EmployerMapper.mapDtoToEntity(employerDto, comment);
     employerService.create(employerEntity);
@@ -101,7 +101,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateInfoFavoriteEmployer(@PathParam(value = "employer_id") Integer employerId) throws Exception {
 
-    logger.info("обновить данные по избранной компании");
+    logger.info("Update info favorite employer");
     EmployerDto employerDto = httpClientExample.getEmployerById(employerId);
     employerService.updateInfo(employerDto);
     return Response.ok().build();
@@ -111,18 +111,19 @@ public class ExampleResource {
   @Path(value = "/favorites/employer/{employer_id}")
   public Response updateCommentFavoriteEmployer(@PathParam(value = "employer_id") Integer id, @QueryParam(value = "comment") String comment) {
 
-    logger.info("обновить комментарий по избранной компании");
+    logger.info("Update comment favorite employer");
     employerService.updateComment(id, comment);
     return Response.ok().build();
   }
 
   @DELETE
   @Path(value = "/favorites/employer/{employer_id}")
+  @Produces(MediaType.APPLICATION_JSON)
   public Response deleteFavoriteEmployer(@PathParam(value = "employer_id") Integer id) {
 
-    logger.info("удалить компанию из избранного");
+    logger.info("delete favorite employer");
     employerService.deleteFromFavorites(id);
-    return Response.ok().build();
+    return Response.ok("Employer was delete").build();
   }
 
   @GET
@@ -130,7 +131,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getFavoritesEmployers(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage) {
 
-    logger.info("получить все избранные компании");
+    logger.info("Get list favorite employers");
     List<EmployerEntity> employerEntityList = employerService.getEmployers(page, perPage);
     List<EmployerDto> employerDtoList = employerEntityList.stream()
                                              .map(EmployerMapper::mapEntityToDto)
@@ -147,7 +148,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response saveFavoriteVacancy(@QueryParam(value = "vacancy_id") Integer vacancyId, @QueryParam(value = "comment") String comment) throws Exception {
 
-    logger.info("сохранить избранную вакансию");
+    logger.info("Save favorite vacancy");
 
     VacancyDto vacancyDto = httpClientExample.getVacancyById(vacancyId);
     VacancyEntity vacancyEntity = VacancyMapper.mapDtoToEntity(vacancyDto, comment);
@@ -160,7 +161,7 @@ public class ExampleResource {
   @Path(value = "favorites/vacancy/{vacancy_id}")
   public Response deleteFavoriteVacancy(@PathParam(value = "vacancy_id") Integer id) {
 
-    logger.info("удалить вакансию из избранного");
+    logger.info("Delete favorite vacancy");
     vacancyService.deleteFromFavorites(id);
 
     return Response.ok().build();
@@ -172,7 +173,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateInfoFavoriteVacancy(@PathParam(value = "vacancy_id") Integer vacancyId) throws Exception {
 
-    logger.info("обновить данные по избранной вакансии");
+    logger.info("Update info favorite vacancy");
     VacancyDto vacancyDto = httpClientExample.getVacancyById(vacancyId);
     vacancyService.updateInfo(vacancyDto);
 
@@ -184,7 +185,7 @@ public class ExampleResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getFavoritesVacancies(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage) {
 
-    logger.info("получить все избранные вакансии");
+    logger.info("Get list favorite vacancy");
 
     List<VacancyEntity> vacancyEntityList =vacancyService.getVacancies(page, perPage);
     List<VacancyDto> vacancyDtoList = vacancyEntityList.stream()
