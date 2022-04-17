@@ -31,7 +31,6 @@ CREATE TABLE if not exists vacancy (
     created_at varchar(100),
     views_count int default 0,
     comment varchar(100)
-
 );
 
 

@@ -1,21 +1,26 @@
 package ru.hh.school.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.hh.school.dao.AreaDao;
 import ru.hh.school.dao.VacancyDao;
 import ru.hh.school.dto.VacancyDto;
+import ru.hh.school.entity.AreaEntity;
 import ru.hh.school.entity.EmployerEntity;
 import ru.hh.school.entity.VacancyEntity;
 
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 
 public class VacancyService {
 
     private final VacancyDao vacancyDao;
     private final EmployerService employerService;
+    private final AreaDao areaDao;
 
-    public VacancyService(VacancyDao vacancyDao, EmployerService employerService) {
+    public VacancyService(VacancyDao vacancyDao, EmployerService employerService, AreaDao areaDao) {
         this.vacancyDao = vacancyDao;
         this.employerService = employerService;
+        this.areaDao = areaDao;
     }
 
     @Transactional
@@ -25,13 +30,20 @@ public class VacancyService {
 
     @Transactional
     public void deleteFromFavorites(Integer id) {
-        vacancyDao.delete(vacancyDao.getById(id));
+        VacancyEntity vacancyEntity = vacancyDao.getById(id).orElseThrow(NotFoundException::new);
+        AreaEntity area = vacancyEntity.getArea();
+        vacancyDao.delete(vacancyEntity);
+
+        // проверка перед удалением Area
+        if (areaDao.checkConstraint(area)) {
+            vacancyDao.delete(area);
+        }
     }
 
     @Transactional
     public void updateInfo(VacancyDto vacancyDto) {
 
-        VacancyEntity vacancyEntity = vacancyDao.getById(vacancyDto.getId());
+        VacancyEntity vacancyEntity = vacancyDao.getById(vacancyDto.getId()).orElseThrow(NotFoundException::new);
         vacancyEntity.setName(vacancyDto.getName());
         vacancyEntity.setCreatedAt(vacancyDto.getCreatedAt());
 

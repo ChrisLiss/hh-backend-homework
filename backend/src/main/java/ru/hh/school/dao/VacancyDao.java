@@ -3,9 +3,11 @@ package ru.hh.school.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import ru.hh.school.entity.EmployerEntity;
 import ru.hh.school.entity.VacancyEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class VacancyDao {
@@ -28,14 +30,22 @@ public class VacancyDao {
         session.saveOrUpdate(vacancy);
     }
 
-    public void delete(VacancyEntity vacancyEntity) {
+    public void delete(Object object) {
+        if (object == null) {
+            return;
+        }
         Session session = sessionFactory.getCurrentSession();
-        session.delete(vacancyEntity);
+        session.delete(object);
     }
 
-    public VacancyEntity getById(Integer id) {
+//    public VacancyEntity getById(Integer id) {
+//        Session session = sessionFactory.getCurrentSession();
+//        return session.get(VacancyEntity.class, id);
+//    }
+
+    public Optional<VacancyEntity> getById(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(VacancyEntity.class, id);
+        return Optional.of(session.get(VacancyEntity.class, id));
     }
 
     public void update(VacancyEntity vacancyEntity) {

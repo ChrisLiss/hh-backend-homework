@@ -1,8 +1,10 @@
 package ru.hh.school.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.hh.school.dao.AreaDao;
 import ru.hh.school.dao.EmployerDao;
 import ru.hh.school.dto.EmployerDto;
+import ru.hh.school.entity.AreaEntity;
 import ru.hh.school.entity.EmployerEntity;
 
 import javax.ws.rs.NotFoundException;
@@ -11,9 +13,11 @@ import java.util.List;
 public class EmployerService {
 
     private final EmployerDao employerDao;
+    private final AreaDao areaDao;
 
-    public EmployerService(EmployerDao employerDao) {
+    public EmployerService(EmployerDao employerDao, AreaDao areaDao) {
         this.employerDao = employerDao;
+        this.areaDao = areaDao;
     }
 
     @Transactional
@@ -45,10 +49,16 @@ public class EmployerService {
 
     @Transactional
     public void deleteFromFavorites(Integer id) {
+
         EmployerEntity employerEntity = employerDao.getByID(id).orElseThrow(NotFoundException::new);
-        if (employerEntity != null) {
-            employerDao.delete(employerEntity);
+        AreaEntity area = employerEntity.getArea();
+        employerDao.delete(employerEntity);
+
+        // проверка перед удалением Area
+        if (areaDao.checkConstraint(area)) {
+            employerDao.delete(area);
         }
+
     }
 
     @Transactional

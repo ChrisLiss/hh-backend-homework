@@ -43,9 +43,12 @@ public class EmployerDao {
         return Optional.of(session.get(EmployerEntity.class, id));
     }
 
-    public void delete(EmployerEntity employerEntity) {
+    public void delete(Object object) {
+        if (object == null) {
+            return;
+        }
         Session session = sessionFactory.getCurrentSession();
-        session.delete(employerEntity);
+        session.delete(object);
     }
 
     public List<EmployerEntity> getEmployers(Integer page, Integer perPage) {

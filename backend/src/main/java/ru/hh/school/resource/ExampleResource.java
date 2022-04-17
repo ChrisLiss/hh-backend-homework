@@ -62,7 +62,6 @@ public class ExampleResource {
   @GET
   @Path(value = "/employer/{employer_id}")
   @Produces(MediaType.APPLICATION_JSON)
-  // TODO: 02.04.2022 Получить компанию с id с api hh
   public Response getEmployerById(@PathParam(value = "employer_id") Integer employerId) throws Exception {
 
     logger.info("Get employer by id");
