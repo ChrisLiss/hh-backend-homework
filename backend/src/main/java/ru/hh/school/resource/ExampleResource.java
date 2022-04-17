@@ -48,6 +48,14 @@ public class ExampleResource {
                                @QueryParam(value = "query") String text) throws Exception {
 
     logger.info("get list employers");
+    int qPage = (page == null) ? 0 : page;
+    int qPerPage = (perPage == null) ? 20 : perPage;
+    if (qPerPage > 100) {
+      return Response.ok("Параметр per_page не может быть больше 100").build();
+    }
+    if (qPerPage * (qPage + 1) > 5000) {                 // Проверка на ограничение глубины возвращаемых результатов
+      return Response.ok("Глубина возвращаемых результатов не может быть больше 5000: per_page * (page + 1) <= 5000").build();
+    }
     return Response.ok(httpClientExample.getEmployers(page, perPage, text)).build();
   }
 
@@ -69,6 +77,15 @@ public class ExampleResource {
                                @QueryParam(value = "query") String text) throws Exception {
 
     logger.info("Get list vacancy");
+    int qPage = (page == null) ? 0 : page;
+    int qPerPage = (perPage == null) ? 20 : perPage;
+    if (qPerPage > 100) {
+      return Response.ok("Параметр per_page не может быть больше 100").build();
+    }
+    if (qPerPage * (qPage + 1) > 2000) {                 // Проверка на ограничение глубины возвращаемых результатов
+      return Response.ok("Глубина возвращаемых результатов не может быть больше 2000: per_page * (page + 1) <= 2000").build();
+    }
+
     return Response.ok(httpClientExample.getVacancies(page, perPage, text)).build();
 
   }

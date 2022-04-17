@@ -1,5 +1,7 @@
 package ru.hh.school.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -17,7 +19,8 @@ public class EmployerEntity {
     @Column(name="date_create", nullable = false, updatable = false)
     private LocalDate dateCreate;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "area_id")
     private AreaEntity area;
 
