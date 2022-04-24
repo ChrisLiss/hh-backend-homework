@@ -148,14 +148,18 @@ public class ExampleResource {
   public Response getFavoritesEmployers(@QueryParam(value = "page") Integer page, @QueryParam(value = "per_page") Integer perPage) {
 
     logger.info("Get list favorite employers");
-    List<EmployerEntity> employerEntityList = employerService.getEmployers(page, perPage);
-    List<EmployerDto> employerDtoList = employerEntityList.stream()
-                                             .map(EmployerMapper::mapEntityToDto)
-                                             .collect(Collectors.toList());
 
-    employerEntityList.forEach(employerService::updateViewsCount);
+    synchronized (this) {
+      List<EmployerEntity> employerEntityList = employerService.getEmployers(page, perPage);
 
-    return Response.ok(employerDtoList).build();
+      List<EmployerDto> employerDtoList = employerEntityList.stream()
+              .map(EmployerMapper::mapEntityToDto)
+              .collect(Collectors.toList());
+
+      employerEntityList.forEach(employerService::updateViewsCount);
+
+      return Response.ok(employerDtoList).build();
+    }
 
   }
 
@@ -203,14 +207,16 @@ public class ExampleResource {
 
     logger.info("Get list favorite vacancy");
 
-    List<VacancyEntity> vacancyEntityList =vacancyService.getVacancies(page, perPage);
-    List<VacancyDto> vacancyDtoList = vacancyEntityList.stream()
-            .map(VacancyMapper::mapEntityToDto)
-            .collect(Collectors.toList());
+    synchronized (this) {
+      List<VacancyEntity> vacancyEntityList = vacancyService.getVacancies(page, perPage);
+      List<VacancyDto> vacancyDtoList = vacancyEntityList.stream()
+              .map(VacancyMapper::mapEntityToDto)
+              .collect(Collectors.toList());
 
-    vacancyEntityList.forEach(vacancyService::updateViewsCountVacancyAndEmployer);
+      vacancyEntityList.forEach(vacancyService::updateViewsCountVacancyAndEmployer);
 
-    return Response.ok(vacancyDtoList).build();
+      return Response.ok(vacancyDtoList).build();
+    }
 
   }
 
